@@ -1,0 +1,54 @@
+﻿@model BookStore.Models.Domain.Loan
+@{
+}
+
+<div class="container pt-5">
+	<div class="row">
+		<div class="col-md-6">
+			<h3>Add Loan</h3>
+			<form asp-action="Add" method="post">
+
+				<div class="form-group">
+					<label asp-for="id_reader">Reader *</label>
+					<select asp-for="id_reader" asp-items="Model.ReaderList" class="form-control">
+						<option value="">--Select--</option>
+					</select>
+					<span asp-validation-for="id_reader" class="text-danger"></span>
+				</div>
+
+				<div class="form-group">
+					<label asp-for="title">Book Title *</label>
+					<select asp-for="id_book" asp-items="Model.BookList" class="form-control">
+						<option value="">--Select--</option>
+					</select>					
+					<span asp-validation-for="title" class="text-danger"></span>
+				</div>
+
+				<div class="form-group">
+                    <label asp-for="loan_date">Loan date *</label>
+                    <input type="date" class="form-control" asp-for="loan_date" />
+                    <span asp-validation-for="loan_date" class="text-danger"></span>
+                </div>
+
+				<div class="form-group">
+					<label asp-for="return_date">Return date *</label>
+					<input type="date" class="form-control" asp-for="return_date" />
+					<span asp-validation-for="return_date" class="text-danger"></span>
+				</div>
+
+
+				@if(TempData["msg"] != null)
+				{
+					<div class="form-group">
+						@TempData["msg"]
+					</div>
+				}
+				<div class="form-group pt-3">
+					<button type="submit" class="btn btn-dark"><i class="bi bi-save"></i> Save</button>
+					<a href="/Loan/GetAll" class="btn btn-primary"> <i class="bi bi-list"></i>List</a>
+				</div>
+
+			</form>
+		</div>
+	</div>
+</div>

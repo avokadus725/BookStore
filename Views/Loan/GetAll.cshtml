@@ -1,0 +1,45 @@
+﻿@model IEnumerable<BookStore.Models.Domain.Loan>
+@{
+}
+
+<div class="container pt-3">
+	<div class="row">
+		<div class="col-md-12">
+			<a class="btn btn-dark" href="/Loan/Add">Add More</a>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<h3>Loans</h3>
+
+			<table class="table table-stripped table-bordered table-dark">
+				<thead>
+					<tr>
+						<th>Book Title</th>
+						<th>Reader First Name</th>
+						<th>Reader Last Name</th>
+						<th>Loan Date</th>
+						<th>Return Date</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var item in Model)
+					{
+						<tr>
+							<td>@item.title</td>
+							<td>@item.first_name</td>
+							<td>@item.last_name</td>
+							<td>@item.loan_date</td>
+							<td>@item.return_date</td>
+							<td>
+								<a class="btn btn-success" href="/Loan/Update?id=@item.id_loan"> Edit</a>
+								<a class="btn btn-danger" onclick="return window.confirm('Are you sure?')" href="/Loan/Delete?id=@item.id_loan"> Delete</a>
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

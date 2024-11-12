@@ -1,0 +1,62 @@
+﻿@model BookStore.Models.Domain.Book
+@{
+}
+
+<div class="container pt-5">
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Update Book</h3>
+            <form asp-action="Update" method="post">
+                <input type="hidden" class="form-control" asp-for="id_book" />
+
+                <div class="form-group">
+                    <label asp-for="title">Title *</label>
+                    <input type="text" class="form-control" asp-for="title" />
+                    <span asp-validation-for="title" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="id_genre">Genre *</label>
+                    <select asp-for="id_genre" asp-items="Model.GenreList" class="form-control">
+                        <option value="">--Select--</option>
+                    </select>
+                    <span asp-validation-for="id_genre" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="published_year">Published Year *</label>
+                    <input type="number" class="form-control" asp-for="published_year" />
+                    <span asp-validation-for="published_year" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="description_book">Popularity *</label>
+                    <textarea class="form-control" asp-for="description_book"></textarea>
+                    <span asp-validation-for="description_book" class="text-danger"></span>
+                </div>
+
+
+                <div class="form-group">
+                    <label asp-for="id_author">Author *</label>
+                    <select asp-for="id_author" asp-items="Model.AuthorList" class="form-control">
+                        <option value="">--Select--</option>
+                    </select>
+                    <span asp-validation-for="id_author" class="text-danger"></span>
+                </div>
+
+                @if (TempData["msg"] != null)
+                {
+                    <div class="form-group">
+                        @TempData["msg"]
+                    </div>
+                }
+                <div class="form-group pt-3">
+                    <button type="submit" class="btn btn-dark"><i class="bi bi-save"></i> Save</button>
+                    <a href="/Book/GetAll" class="btn btn-primary"> <i class="bi bi-list"></i>List</a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
