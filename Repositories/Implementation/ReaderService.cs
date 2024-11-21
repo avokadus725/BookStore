@@ -1,5 +1,8 @@
 ﻿using BookStore.Models.Domain;
+using BookStore.Models.DTO;
 using BookStore.Repositories.Abstract;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookStore.Repositories.Implementation
 {
@@ -65,5 +68,26 @@ namespace BookStore.Repositories.Implementation
                 return false;
             }
         }
+
+        public (IEnumerable<Reader> Readers, int readerCount) GetReadersByDomain(string domain)
+        {
+            try
+            {
+                var parameter = new SqlParameter("@domain", domain);
+                var readers = context.Readers
+                    .FromSqlRaw("SELECT * FROM dbo.get_readers_by_domain(@domain)", parameter)
+                    .ToList();
+
+                var readerCount = context.Database
+                    .ExecuteSqlRaw("SELECT dbo.scalar_get_readers_by_domain({0})", domain);
+
+                return (readers, readerCount);
+            }
+            catch (Microsoft.Data.SqlClient.SqlException ex)
+            {
+                throw new Exception("Error calling database functions: " + ex.Message);
+            }
+        }
+
     }
 }

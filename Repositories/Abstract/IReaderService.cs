@@ -1,4 +1,6 @@
 ﻿using BookStore.Models.Domain;
+using BookStore.Models.DTO;
+
 namespace BookStore.Repositories.Abstract
 {
     public interface IReaderService
@@ -8,5 +10,7 @@ namespace BookStore.Repositories.Abstract
         bool Delete(int id);
         Reader FindById(int id);
         IEnumerable<Reader> GetAll();
-    }
+
+        (IEnumerable<Reader> Readers, int readerCount) GetReadersByDomain(string domain);
+	}
 }

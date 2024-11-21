@@ -8,5 +8,7 @@ namespace BookStore.Repositories.Abstract
 		bool Delete(int id);
 		Book FindById(int id);
 		IEnumerable<Book> GetAll();
+
+		string SetPopularity(string name_genre);
 	}
 }

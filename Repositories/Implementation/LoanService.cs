@@ -13,16 +13,9 @@ namespace BookStore.Repositories.Implementation
         }
 		public bool Add(Loan model)
 		{
-			try
-			{
-				context.Loans.Add(model);
-				context.SaveChanges();
-				return true;
-			}
-			catch (Exception ex)
-			{
-				return false;
-			}
+			context.Loans.Add(model);
+			context.SaveChanges();
+			return true;
 		}
 
 

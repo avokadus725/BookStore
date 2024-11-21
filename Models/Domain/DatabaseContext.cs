@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using BookStore.Models.DTO;
 
 namespace BookStore.Models.Domain
 {
@@ -15,5 +16,5 @@ namespace BookStore.Models.Domain
         public DbSet<Book> Books { get; set; }
         public DbSet<Loan> Loans { get; set; }
 
-    }
+	}
 }

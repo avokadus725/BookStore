@@ -1,0 +1,46 @@
+﻿@model IEnumerable<BookStore.Models.Domain.Reader>
+@{
+}
+<div class="container pt-5">
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Get Readers By Domain</h3>
+            <form asp-action="GetReadersByDomain" method="post">
+                <div class="form-group">
+                    <label> Enter Email Domain (e.g. gmail.com, ukr.net etc.)</label>
+                    <input type="text" name="domain" class="form-control" />
+                </div>
+                <div class="form-group pt-3">
+                    <button type="submit" class="btn btn-dark">Get Readers</button>
+                </div>
+            </form>
+
+            @if (Model != null && Model.Any())
+            {
+                <table class="table mt-4">
+                    <thead>
+                        <tr>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Email</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var reader in Model)
+                        {
+                            <tr>
+                                <td>@reader.first_name</td>
+                                <td>@reader.last_name</td>
+                                <td>@reader.email</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <div class="mt-3">
+                    <strong>Total readers with this domain: </strong>
+                    @ViewBag.readerCount
+                </div>
+            }
+        </div>
+    </div>
+</div>

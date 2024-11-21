@@ -13,17 +13,19 @@ namespace BookStore.Models.Domain
 		[Required]
 		public int published_year { get; set; }
 		[Required]
-		public string description_book { get; set; }
+		public string? description_book { get; set; }
 		[Required]
 		public int id_author { get; set; }
 		[Required]
 		public int id_genre { get; set; }
 
+		[NotMapped]
+		public string? first_name { get; set; }
 
 		[NotMapped]
-		public string ? last_name { get; set; }
+		public string? last_name { get; set; }
 		[NotMapped]
-        public string ? name_genre { get; set; }
+        public string? name_genre { get; set; }
 
 		[NotMapped]
 		public List<SelectListItem> ? AuthorList { get; set; }
@@ -31,6 +33,7 @@ namespace BookStore.Models.Domain
 		public List<SelectListItem> ? GenreList { get; set; }
 
 
-
+		[NotMapped]
+		public int LoanCount { get; set; }
 	}
 }

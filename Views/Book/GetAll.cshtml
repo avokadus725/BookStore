@@ -6,6 +6,7 @@
 	<div class="row">
 		<div class="col-md-12">
 			<a class="btn btn-dark" href="/Book/Add">Add More</a>
+			<a class="btn btn-dark" href="/Book/SetPopularity">Set Popularity</a>
 		</div>
 	</div>
 	<div class="row">
@@ -20,6 +21,7 @@
 						<th>Genre</th>
 						<th>Author</th>
 						<th>Popularity</th>
+						<th>Loans</th>
 						<th>Action</th>
 					</tr>
 				</thead>
@@ -30,8 +32,9 @@
 							<td>@item.title</td>
 							<td>@item.published_year</td>
 							<td>@item.name_genre</td>
-							<td>@item.last_name</td>
+							<td>@($"{item.first_name} {item.last_name}")</td>
 							<td>@item.description_book</td>
+							<td>@item.LoanCount</td>
 							<td>
 								<a class="btn btn-success" href="/Book/Update?id=@item.id_book"> Edit</a>
 								<a class="btn btn-danger" onclick="return window.confirm('Are you sure?')" href="/Book/Delete?id=@item.id_book"> Delete</a>

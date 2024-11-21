@@ -1,6 +1,7 @@
 ﻿using BookStore.Repositories.Abstract;
 using Microsoft.AspNetCore.Mvc;
 using BookStore.Models.Domain;
+using BookStore.Repositories.Implementation;
 
 namespace BookStore.Controllers
 {
@@ -69,6 +70,22 @@ namespace BookStore.Controllers
             var data = service.GetAll();
             return View(data);
         }
+
+		public IActionResult GetReadersByDomain()
+		{
+			return View();
+		}
+
+		[HttpPost]
+        public IActionResult GetReadersByDomain(string domain)
+        {
+            var result = service.GetReadersByDomain(domain);
+
+            ViewBag.readerCount = result.readerCount;
+
+            return View(result.Readers);
+        }
+
 
     }
 }

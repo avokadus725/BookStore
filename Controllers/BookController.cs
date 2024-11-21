@@ -2,6 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using BookStore.Models.Domain;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.SqlClient;
+using BookStore.Repositories.Implementation;
 
 namespace BookStore.Controllers
 {
@@ -24,7 +27,7 @@ namespace BookStore.Controllers
 			model.AuthorList = authorService.GetAll()
 							.Select(a => new SelectListItem
 							{
-								Text = a.last_name,
+								Text = $"{a.first_name} {a.last_name}",
 								Value = a.id_author.ToString()
 							}).ToList();
 
@@ -43,7 +46,7 @@ namespace BookStore.Controllers
 			model.AuthorList = authorService.GetAll()
 							.Select(a => new SelectListItem
 							{
-								Text = a.last_name,
+								Text = $"{a.first_name} {a.last_name}",
 								Value = a.id_author.ToString(),
 								Selected = a.id_author == model.id_author
 							}).ToList();
@@ -60,13 +63,28 @@ namespace BookStore.Controllers
             {
                 return View(model);
             }
-            var result = bookService.Add(model);
-            if (result)
+            try
             {
-                TempData["msg"] = "Added Successfully!";
-                return RedirectToAction(nameof(Add));
-            }
-            TempData["msg"] = "Error has occurred on server side";
+				var result = bookService.Add(model);
+				if (result)
+				{
+					TempData["msg"] = "Added Successfully!";
+					return RedirectToAction(nameof(Add));
+
+				}
+			}
+            catch (DbUpdateException ex)
+            {
+				if (ex.InnerException is SqlException sqlEx)
+				{
+					TempData["msg"] = sqlEx.Message;
+				}
+				else
+				{
+					TempData["msg"] = "An unexpected database error occurred.";
+				}
+			}
+			
             return View(model);
         }
 
@@ -74,14 +92,14 @@ namespace BookStore.Controllers
         public IActionResult Update(int id)
         {
             var model = bookService.FindById(id);
-			model.AuthorList = authorService.GetAll().Select(a => new SelectListItem { Text = a.last_name, Value = a.id_author.ToString(), Selected = a.id_author == model.id_author }).ToList();
+			model.AuthorList = authorService.GetAll().Select(a => new SelectListItem { Text = $"{a.first_name} {a.last_name}", Value = a.id_author.ToString(), Selected = a.id_author == model.id_author }).ToList();
 			model.GenreList = genreService.GetAll().Select(a => new SelectListItem { Text = a.name_genre, Value = a.id_genre.ToString(), Selected = a.id_genre == model.id_genre }).ToList();
 			return View(model);
         }
         [HttpPost]
         public IActionResult Update(Book model)
         {
-			model.AuthorList = authorService.GetAll().Select(a => new SelectListItem { Text = a.last_name, Value = a.id_author.ToString(), Selected = a.id_author == model.id_author }).ToList();
+			model.AuthorList = authorService.GetAll().Select(a => new SelectListItem { Text = $"{a.first_name} {a.last_name}", Value = a.id_author.ToString(), Selected = a.id_author == model.id_author }).ToList();
 			model.GenreList = genreService.GetAll().Select(a => new SelectListItem { Text = a.name_genre, Value = a.id_genre.ToString(), Selected = a.id_genre == model.id_genre }).ToList();
 			if (!ModelState.IsValid)
             {
@@ -109,5 +127,44 @@ namespace BookStore.Controllers
             return View(data);
         }
 
-    }
+
+		[HttpGet]
+		public IActionResult SetPopularity()
+		{
+			var genres = genreService.GetAll()
+				.Select(a => new SelectListItem
+				{
+					Text = a.name_genre,
+					Value = a.name_genre
+				}).ToList();
+			ViewBag.GenreList = genres;
+			return View();
+		}
+
+		[HttpPost]
+		public IActionResult SetPopularity(string name_genre)
+		{
+			var genres = genreService.GetAll()
+				.Select(a => new SelectListItem
+				{
+					Text = a.name_genre,
+					Value = a.name_genre
+				}).ToList();
+			ViewBag.GenreList = genres;
+
+			try
+			{
+				string resultMessage = bookService.SetPopularity(name_genre);
+				TempData["msg"] = resultMessage;
+			}
+			catch (Exception ex)
+			{
+				TempData["msg"] = $"Помилка: {ex.Message}";
+			}
+
+			return View();
+		}
+
+
+	}
 }
